@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { User } from "./types";
 import axios from "axios";
+import { AddUserNote } from "./add-user-note";
+import { Link } from "react-router-dom";
 
 export const UserRow: React.FC<{ user: User }> = ({ user }) => {
     const [isEditing, setIsEditing] = useState(false);
+    const [isAddingNote, setIsAddingNote] = useState(false);
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [age, setAge] = useState(`${user.age}`);
@@ -82,14 +85,31 @@ export const UserRow: React.FC<{ user: User }> = ({ user }) => {
         );
     }
     return (
+        <>
         <tr key={user.id}>
             <td>
                 <button onClick={() => setIsEditing(true)}>Edit</button>
+                <button style={{marginLeft: "1em"}} onClick={() => setIsAddingNote(true)}>Add Note</button>
+                <Link style={{marginLeft: "1em"}} to={`/user/${user.id}`}>Details</Link>
             </td>
             <td>{firstName}</td>
             <td>{lastName}</td>
             <td>{age}</td>
             <td>{phoneNumber}</td>
+            <td>
+                <div style={{width: "100%"}}>
+                    {user.notes.map(userNote => <div style={{textOverflow: "ellipsis"}}>{userNote.note}</div>)}
+                </div>
+            </td>
         </tr>
+        {isAddingNote && (
+            <tr>
+                <td colSpan={6}>
+                    <AddUserNote user={user} key={user.id}/>
+                </td>
+            </tr>
+            )
+        }
+        </>
     );
 };
