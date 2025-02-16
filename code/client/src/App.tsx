@@ -1,14 +1,14 @@
-import { AddUser } from "./add-user";
-import { Users } from "./users";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Home } from './home';
+import { ViewUser } from './view-user';
 
-export const App: React.FC = () => {
-    return (
-        <div className="p-4 space-y-8">
-            <h1 className="text-xl">SimpleCrm</h1>
-            <Users />
-            <AddUser />
-        </div>
-    );
-};
+export const App: React.FC = () => (
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/user/:id" element={<ViewUser/>} />
+        </Routes>
+    </BrowserRouter>
+)
 
 export default App;
